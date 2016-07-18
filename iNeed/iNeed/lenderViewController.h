@@ -7,12 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface lenderViewController : UIViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface lenderViewController : UIViewController
+                                <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate> {
     UIImageView *imageView;
     BOOL newMedia;
     NSArray *jsonArray;
     lenderViewController *lenderVC;
+                                    
+    CLLocationManager *locationManager;
+    CLGeocoder *geocoder;
+    CLPlacemark *placemark;
 }
 
 @property (nonatomic,strong) IBOutlet UIImageView *imageView;
@@ -31,6 +37,7 @@
 @property (strong,nonatomic) NSArray *stateData;
 @property (strong,nonatomic) NSArray *categoryData;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *aiv;
 
@@ -41,5 +48,6 @@
 -(IBAction)useDelItem:(id)sender;
 -(IBAction)useFetchItem:(id)sender;
 -(IBAction)useUpdateItem:(id)sender;
+-(IBAction)textFieldReturn:(id)textField;
 
 @end

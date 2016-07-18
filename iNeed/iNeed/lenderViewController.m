@@ -17,6 +17,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    
+    
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                           action:@selector(dismissKeyboard)];
@@ -42,10 +45,56 @@
     pickerCategory.delegate = self;
     pickerCategory.tag = 2;
     self.tfCategory.inputView = pickerCategory;
-    self.categoryData = @[@"Books",@"Car",@"Laptops",@"Tools",@"Projector",@"Vaccum Cleaner",@"Kitchenware",@"Magazine",@"Calculator",@"Money",@"Mobile",@"Others"];
+    self.categoryData = @[@"Books",@"Car",@"Laptops",@"Tools",@"Projector",@"Vaccum Cleaner",@"Kitchenware",@"Magazine",@"Calculator",@"Money",@"Mobile",@"Games",@"Others"];
+    
+    
+    locationManager = [[CLLocationManager alloc] init];
+    [locationManager requestWhenInUseAuthorization];
+    geocoder = [[CLGeocoder alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [locationManager startUpdatingLocation];
+     }
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    //NSLog(@"didUpdateToLocation: %@", newLocation);
+    CLLocation *currentLocation = newLocation;
+    
+    if (currentLocation != nil) {
+//        NSString *gotLongitude = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.longitude];
+//        NSString *gotLatitude = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.latitude];
+        
+        [locationManager stopUpdatingLocation];
+        
+        //NSLog(@"Resolving the Address");
+        [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+            
+            if (error == nil && [placemarks count] > 0) {
+                placemark = [placemarks lastObject];
+                
+                NSString *gotState = [NSString stringWithFormat:@"%@",placemark.administrativeArea];
+                NSString *gotCity = [NSString stringWithFormat:@"%@",placemark.locality];
+                NSString *gotPostalCode = [NSString stringWithFormat:@"%@",placemark.postalCode];
+                NSString *gotStreetAddress = [NSString stringWithFormat:@"%@",placemark.thoroughfare];
+                
+                _tfState.text = gotState;
+                _tfCity.text = gotCity;
+                _tfZipCode.text = gotPostalCode;
+                _tfStreet.text = gotStreetAddress;
+                
+                
+                
+            } else {
+                NSLog(@"%@", error.debugDescription);
+            }
+        } ];
+    }
 }
 
 -(void)dismissKeyboard {
+    [_tfName resignFirstResponder];
     [_tfCategory resignFirstResponder];
     [_tfdescription resignFirstResponder];
     [_tfStreet resignFirstResponder];
@@ -54,6 +103,16 @@
     [_tfZipCode resignFirstResponder];
     [_tfMobileNumber resignFirstResponder];
     [_tfEmailAddress resignFirstResponder];
+    
+    [_scrollView setContentOffset:CGPointMake(0,0) animated:YES];
+    
+    }
+
+
+
+-(IBAction)textFieldReturn:(id)textField{
+    [textField resignFirstResponder];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -126,6 +185,21 @@
     self.tfStatus.text=@"";
 }
 
+-(BOOL) NSStringIsValidEmail:(NSString *)checkString
+
+{
+    BOOL stricterFilter = NO;
+    NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
+    NSString *laxString = @".+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+
+    return [emailTest evaluateWithObject:checkString];
+    
+}
+
+//Ref: http://stackoverflow.com/questions/3139619/check-that-an-email-address-is-valid-on-ios
+
 -(void)useAddItem:(id)sender{
     [self.aiv startAnimating];
     
@@ -133,19 +207,45 @@
          ([[_tfCity.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0) |
          ([[_tfdescription.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)|
          ([[_tfEmailAddress.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)|
-         !([[_tfMobileNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 10)|
          ([[_tfName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)|
          ([[_tfState.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)|
          ([[_tfStreet.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)|
-         !([[_tfZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 5)|
          ([[_tfStatus.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0))
         )
     {
+        [self.aiv stopAnimating];
         NSString *msg;
         msg = [NSString stringWithFormat:@"No empty fields please !"];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
 
+    }
+    else if (!([[_tfZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 5)){
+        [self.aiv stopAnimating];
+        NSString *msg;
+        msg = [NSString stringWithFormat:@"Pin takes only 5 digits !"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else if (!([[_tfMobileNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 10)){
+        [self.aiv stopAnimating];
+        NSString *msg;
+        msg = [NSString stringWithFormat:@"Phone Number takes only 10 digits !"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else if(!([self NSStringIsValidEmail:_tfEmailAddress.text])){
+        
+        [self.aiv stopAnimating];
+        
+        NSString *msg;
+        
+        msg = [NSString stringWithFormat:@"Email Address Not Valid !"];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+        
     }
     else{
     NSString *cat = _tfCategory.text;
@@ -158,14 +258,14 @@
     NSString *str = _tfStreet.text;
     NSString *zip = _tfZipCode.text;
     NSString *status = _tfStatus.text;
-     NSString *flag= @"insert";
+    NSString *flag= @"insert";
     
     NSData * imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
     NSString *nameofimg = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 
     
-    //NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
-    NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed20/iNeed_Service.php"];
+    NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
+    //NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed21/iNeed_Service.php"];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -177,7 +277,7 @@
  
     NSDictionary *dictionary = @{@"category":cat,@"name":nam,@"description":des,@"street":str,@"city":cit,@"state":sta,@"zip":zip,@"mobile":mob,@"email":ema,@"image":nameofimg, @"status":status, @"flag":flag};
     
-    NSLog(@"Dictionary --- > %@",dictionary);
+    //NSLog(@"Dictionary --- > %@",dictionary);
     
     NSError *error = nil;
     
@@ -212,8 +312,8 @@
     NSString *nam = _tfName.text;
     NSString *flag= @"delete";
     
-    //NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
-    NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed20/iNeed_Service.php"];
+    NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
+    //NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed21/iNeed_Service.php"];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -225,7 +325,7 @@
     
     NSDictionary *dictionary = @{@"category":cat,@"name":nam,@"description":des,@"flag":flag};
     
-    NSLog(@"Dictionary --- > %@",dictionary);
+    //NSLog(@"Dictionary --- > %@",dictionary);
     
     NSError *error = nil;
     
@@ -262,8 +362,8 @@
     NSString *nam = _tfName.text;
     NSString *flag= @"select";
     
-    //NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
-    NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed20/iNeed_Service.php"];
+    NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
+    //NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed21/iNeed_Service.php"];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -275,42 +375,43 @@
     
     NSDictionary *dictionary = @{@"category":cat,@"name":nam,@"description":des,@"flag":flag};
     
-    NSLog(@"Dictionary --- > %@",dictionary);
+    //NSLog(@"Dictionary --- > %@",dictionary);
     
     NSError *error = nil;
     
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:kNilOptions error:&error];
-    [self.aiv stopAnimating];
+    
     NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request fromData:data completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
         if(error==nil){
             
             NSString *responseData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"ResponseData = %@",responseData);
-             NSLog(@"ResponseData Length= %lu",(unsigned long)[responseData length]);
-            NSLog(@"----End of ResponseData---");
+            //NSLog(@"ResponseData = %@",responseData);
+             //NSLog(@"ResponseData Length= %lu",(unsigned long)[responseData length]);
+            //NSLog(@"----End of ResponseData---");
             
             if ([[responseData stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 2) {
+               
                 NSString *msg;
                 msg = [NSString stringWithFormat:@"Incorrect data entered !\n Enter Full Name, Category & Description correctly !"];
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alert show];
-                
+                 [self.aiv stopAnimating];
 
             }
             
             else{
-                
+                [self.aiv stopAnimating];
                 NSMutableData *mutData = (NSMutableData *)[responseData dataUsingEncoding:NSUTF8StringEncoding];
                 
                 //NSLog(@"mutData==%@",mutData);
                 
                 NSError *error;
                 jsonArray = [NSJSONSerialization JSONObjectWithData:mutData options:NSJSONReadingAllowFragments error:&error];
-                NSLog(@"select JSON Array==%@",jsonArray);
+                //NSLog(@"select JSON Array==%@",jsonArray);
                 
                 NSDictionary *item = jsonArray[0];
-                NSLog(@"item========%@",item);
+                //NSLog(@"item========%@",item);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //this block will be executed asynchronously on the main thread bcoz we aren't on the main GUI thread
                     _tfCategory.text = item[@"category"];
@@ -343,18 +444,16 @@
 
 -(void)useUpdateItem:(id)sender{
     [self.aiv startAnimating];
-    NSLog(@"Length===%lu",(unsigned long)[_tfCategory.text length]);
+    //NSLog(@"Length===%lu",(unsigned long)[_tfCategory.text length]);
    
     if(
         (([[_tfCategory.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0) ||
         ([[_tfCity.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0) ||
         ([[_tfdescription.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)||
         ([[_tfEmailAddress.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)||
-        !([[_tfMobileNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 10)||
         ([[_tfName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)||
         ([[_tfState.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)||
         ([[_tfStreet.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0)||
-        !([[_tfZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 5)||
         ([[_tfStatus.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 0) )
        
 //         [[NSCharacterSet decimalDigitCharacterSet] isSupersetOfSet:[NSCharacterSet characterSetWithCharactersInString:_tfZipCode.text]])
@@ -362,10 +461,38 @@
          //[_tfZipCode.text rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].location != NSNotFound)
        )
     {
+        [self.aiv stopAnimating];
         NSString *msg;
         msg = [NSString stringWithFormat:@"Something is wrong with the data you provided !"];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
+    }
+    else if (!([[_tfZipCode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 5)){
+        [self.aiv stopAnimating];
+        NSString *msg;
+        msg = [NSString stringWithFormat:@"Pin takes only 5 digits !"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else if (!([[_tfMobileNumber.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]length] == 10)){
+        [self.aiv stopAnimating];
+        NSString *msg;
+        msg = [NSString stringWithFormat:@"Phone Number takes only 10 digits !"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else if(!([self NSStringIsValidEmail:_tfEmailAddress.text])){
+        
+        [self.aiv stopAnimating];
+        
+        NSString *msg;
+        
+        msg = [NSString stringWithFormat:@"Email Address Not Valid !"];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+        
     }
     else{
     NSString *cat = _tfCategory.text;
@@ -385,8 +512,8 @@
     
     //NSLog(@"From image field: %@",nameofimg);
     
-    //NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
-    NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed20/iNeed_Service.php"];
+    NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service.php"];
+    //NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed21/iNeed_Service.php"];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -398,7 +525,7 @@
     
     NSDictionary *dictionary = @{@"category":cat,@"name":nam,@"description":des,@"street":str,@"city":cit,@"state":sta,@"zip":zip,@"mobile":mob,@"email":ema, @"image":nameofimg, @"status":status, @"flag":flag};
     
-    NSLog(@"Dictionary --- > %@",dictionary);
+    //NSLog(@"Dictionary --- > %@",dictionary);
     
     NSError *error = nil;
     
@@ -408,9 +535,9 @@
         
         if(error==nil){
             [self.aiv stopAnimating];
-            NSString *responseData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"ResponseData = %@",responseData);
-            NSLog(@"ResponseData Length= %lu",(unsigned long)[responseData length]);
+            //NSString *responseData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            //NSLog(@"ResponseData = %@",responseData);
+            //NSLog(@"ResponseData Length= %lu",(unsigned long)[responseData length]);
           
             
             NSString *msg;
@@ -483,15 +610,30 @@
     }
 }
 
+//Reference: http://stackoverflow.com/questions/7193787/keyboard-scroll-on-active-text-field-scrolling-to-out-of-view
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)textFieldDidBeginEditing:(UITextField *)sender {
+    [_scrollView setContentOffset:CGPointMake(0,sender.center.y-140) animated:YES];
 }
-*/
+
+- (IBAction)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    
+    NSInteger nextTag = textField.tag + 1;
+    // Try to find next responder
+    UIResponder *nextResponder = [textField.superview viewWithTag:nextTag];
+    
+    if (nextResponder) {
+        [_scrollView setContentOffset:CGPointMake(0,textField.center.y-140) animated:YES];
+        // Found next responder, so set it.
+        [nextResponder becomeFirstResponder];
+    } else {
+        [_scrollView setContentOffset:CGPointMake(0,0) animated:YES];
+        [textField resignFirstResponder];
+        
+    }
+    
+}
 
 @end

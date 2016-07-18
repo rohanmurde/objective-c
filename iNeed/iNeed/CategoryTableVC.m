@@ -19,12 +19,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     _feedItem = [[NSArray alloc]init];
     _homeModel = [[HomeModel alloc]init];
     _homeModel.delegate =self;
@@ -80,8 +74,8 @@
        
     //Using NSURL Session
     NSURLSession *session = [NSURLSession sharedSession];
-    //NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service2.php"];
-    NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed20/iNeed_Service2.php"];
+    NSURL * url = [NSURL URLWithString:@"http://localhost/iNeed_Service2.php"];
+    //NSURL * url = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed21/iNeed_Service2.php"];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPBody = [categoryURL dataUsingEncoding:NSUTF8StringEncoding];
@@ -98,7 +92,7 @@
                                                                            
                                                                 NSError *error;
                                                                 jsonArray = [NSJSONSerialization JSONObjectWithData:mutData options:NSJSONReadingAllowFragments error:&error];
-                                                                NSLog(@"JSON Array==%@",jsonArray);
+                                                                //NSLog(@"JSON Array==%@",jsonArray);
                                                                 
                                                                 dispatch_async(dispatch_get_main_queue(), ^{
                                                                     //this block will be executed asynchronously on the main thread bcoz we aren't on the main GUI thread

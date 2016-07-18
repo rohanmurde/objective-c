@@ -7,6 +7,7 @@
 //
 
 #import "HomeModel.h"
+//Reference: http://codewithchris.com/iphone-app-connect-to-mysql-database/
 
 @interface HomeModel()
 {
@@ -16,8 +17,8 @@
 @end
 @implementation HomeModel
 -(void)downloadItems{
-    NSURL *jsonFileUrl = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed20/iNeed_Service2.php"];
-    //NSURL *jsonFileUrl = [NSURL URLWithString:@"http://localhost/iNeed_Service2.php"];
+    //NSURL *jsonFileUrl = [NSURL URLWithString:@"http://people.rit.edu/ram9125/iNeed21/iNeed_Service2.php"];
+    NSURL *jsonFileUrl = [NSURL URLWithString:@"http://localhost/iNeed_Service2.php"];
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:jsonFileUrl];
     [NSURLConnection connectionWithRequest:urlRequest delegate:self];
 }
@@ -45,7 +46,6 @@
     NSError *error;
     NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:_downloadedData options:NSJSONReadingAllowFragments error:&error];
     
-    // Loop through Json objects, create question objects and add them to our questions array
     for (int i = 0; i < jsonArray.count; i++)
     {
         NSDictionary *jsonElement = jsonArray[i];
@@ -57,7 +57,7 @@
         
         // Add this question to the locations array
         [_fromJSON addObject:newVars];
-        NSLog(@"JSON Array==%@",jsonArray);
+        //NSLog(@"JSON Array==%@",jsonArray);
     }
     
     // Ready to notify delegate that data is ready and pass back items

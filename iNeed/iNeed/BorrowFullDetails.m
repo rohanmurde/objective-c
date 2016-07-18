@@ -20,6 +20,7 @@
 #define Owner_Mobile 9
 #define Owner_Email 10
 #define Show_Map 11
+#define Favorite 12
 
 
 @interface BorrowFullDetails ()
@@ -44,14 +45,14 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    NSLog(@"FromBorrowVC=%@",_borrowFullItemDetails);
-  }
+    //NSLog(@"FromBorrowVC=%@",_borrowFullItemDetails);
+}
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     // Return the number of sections.
-    return 12;
+    return 13;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -98,9 +99,11 @@
         case Show_Map:
             title = @"Show On Map";
             break;
-       
-
-                default:
+        case Favorite:
+            title = @"Favorite It";
+            break;
+            
+        default:
             NSLog(@"Should not be here");
             break;
     }
@@ -150,7 +153,7 @@
             break;
             
         case Owner_Name:
-        {  
+        {
             cell.textLabel.text=_item[@"name"];
         }
             break;
@@ -189,7 +192,11 @@
             cell.textLabel.text=@"Get Driving Directions";
         }
             break;
-      
+        case Favorite:
+        {
+            cell.textLabel.text=@"Add to Favorites";
+        }
+            break;
             
         default:
             NSLog(@"Should not be here !!");
@@ -202,8 +209,27 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-  
-        switch (indexPath.section) {
+    
+    switch (indexPath.section) {
+            
+        case Favorite:
+        {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:[[NSUserDefaults
+                                                                     standardUserDefaults] arrayForKey:@"favorites"]];
+            
+            if (![array containsObject:_item[@"description"]]) {
+                [array addObject:_item[@"description"]];
+            }
+            
+            [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"favorites"];
+            
+            NSString *msg = [NSString stringWithFormat:@"%@ was added to Favorites",_item[@"description"]];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Favorites" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            break;
+
+        }
             
         case Owner_Email:
         {
@@ -218,18 +244,18 @@
             NSArray *toRecipients = [emailaddress componentsSeparatedByString:@" "];
             
             if([MFMailComposeViewController canSendMail]){
-            MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
-            mc.mailComposeDelegate = self;
-            [mc setSubject:emailTitle];
-            [mc setMessageBody:messageBody isHTML:YES];
-            [mc setToRecipients:toRecipients];
+                MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+                mc.mailComposeDelegate = self;
+                [mc setSubject:emailTitle];
+                [mc setMessageBody:messageBody isHTML:YES];
+                [mc setToRecipients:toRecipients];
                 // Present mail view controller on screen
                 [self presentViewController:mc animated:YES completion:NULL];
-
+                
             }
             break;
         }
-                
+            
         case Owner_Mobile:
         {
             NSString *phonenumber = [NSString stringWithFormat:@"%@",_item[@"mobile"]];
@@ -248,7 +274,7 @@
             //reference: http://stackoverflow.com/questions/9732043/make-calls-from-iphone-app
         }
             break;
-        
+            
         case Show_Map:
         {
             
@@ -261,58 +287,58 @@
             NSString *zip = _item[@"zip"];
             
             CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+            
+            NSString *addressString = [NSString stringWithFormat:@"%@ %@ %@ %@",street,city,state,zip];
+            
+            [geoCoder geocodeAddressString:addressString completionHandler:^(NSArray *palcemarks, NSError *error){
+                
+                if (error) {
                     
-                    NSString *addressString = [NSString stringWithFormat:@"%@ %@ %@ %@",street,city,state,zip];
+                    NSLog(@"Geocode Failed With Error: %@",error);
                     
-                    [geoCoder geocodeAddressString:addressString completionHandler:^(NSArray *palcemarks, NSError *error){
-                        
-                        if (error) {
-                            
-                            NSLog(@"Geocode Failed With Error: %@",error);
-                            
-                            return;
-                            
-                        }
-                        
-                        if (palcemarks && palcemarks.count > 0) {
-                            
-                            CLPlacemark *placemark = palcemarks[0];
-                            
-                            CLLocation *location = placemark.location;
-                            
-                            _coords = location.coordinate;
-                            
-                            
-                            
-                            NSDictionary *address = @{(NSString *)kABPersonAddressStreetKey:street,
-                                                      
-                                                      (NSString *)kABPersonAddressCityKey:city,
-                                                      
-                                                      (NSString *)kABPersonAddressStateKey:state,
-                                                      
-                                                      (NSString *)kABPersonAddressZIPKey:zip
-                                                      
-                                                      };
-                            
-                            MKPlacemark *place = [[MKPlacemark alloc] initWithCoordinate:_coords addressDictionary:address];
-                            
-                            MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:place];
-                            
-                            NSDictionary *options = @{MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving};
-                            
-                            [mapItem openInMapsWithLaunchOptions:options];
-                            
-                            
-                            
-                        }
-                        
-                    }];
+                    return;
+                    
+                }
+                
+                if (palcemarks && palcemarks.count > 0) {
+                    
+                    CLPlacemark *placemark = palcemarks[0];
+                    
+                    CLLocation *location = placemark.location;
+                    
+                    _coords = location.coordinate;
+                    
+                    
+                    
+                    NSDictionary *address = @{(NSString *)kABPersonAddressStreetKey:street,
+                                              
+                                              (NSString *)kABPersonAddressCityKey:city,
+                                              
+                                              (NSString *)kABPersonAddressStateKey:state,
+                                              
+                                              (NSString *)kABPersonAddressZIPKey:zip
+                                              
+                                              };
+                    
+                    MKPlacemark *place = [[MKPlacemark alloc] initWithCoordinate:_coords addressDictionary:address];
+                    
+                    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:place];
+                    
+                    NSDictionary *options = @{MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving};
+                    
+                    [mapItem openInMapsWithLaunchOptions:options];
+                    
+                    
+                    
+                }
+                
+            }];
             
         }
-        
+            
     }
-    //[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
+    
 }
 
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -326,7 +352,7 @@
     
     if(indexPath.section == Item_Image){
         
-               return (200.0);
+        return (200.0);
     }
     else{
         return 50.0;

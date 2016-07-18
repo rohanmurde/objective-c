@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A4139861A38E062009D8953 /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A4139841A38E061009D8953 /* blueButton.png */; };
+		0A4139871A38E062009D8953 /* greyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A4139851A38E062009D8953 /* greyButton.png */; };
 		0A61FC351A2BDCD700A09AB1 /* iNeed_Logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0A61FC341A2BDCD700A09AB1 /* iNeed_Logo.jpg */; };
 		0A68E8981A2AA5D90039E9D6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A68E8971A2AA5D90039E9D6 /* MessageUI.framework */; };
 		0A6C74041A2E3354009456AC /* splashScreenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A6C74031A2E3354009456AC /* splashScreenLogo.png */; };
+		0AC7C0671A39F18F00992DBA /* FavoriteTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC7C0661A39F18F00992DBA /* FavoriteTVC.m */; };
 		0ACD281D1A1D784B006E98DF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD281C1A1D784B006E98DF /* main.m */; };
 		0ACD28201A1D784B006E98DF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD281F1A1D784B006E98DF /* AppDelegate.m */; };
 		0ACD28291A1D784B006E98DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ACD28271A1D784B006E98DF /* Main.storyboard */; };
@@ -142,6 +145,7 @@
 		0AFD6B871A2414BC000DD309 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AFD6B861A2414BC000DD309 /* CoreGraphics.framework */; };
 		0AFD6B891A2414DA000DD309 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AFD6B881A2414DA000DD309 /* UIKit.framework */; };
 		0AFD6B8B1A2414E1000DD309 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AFD6B8A1A2414E1000DD309 /* Foundation.framework */; };
+		EFDD98501A3D28B000D7A6BF /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDD984F1A3D28B000D7A6BF /* LoginVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,9 +159,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A4139841A38E061009D8953 /* blueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueButton.png; sourceTree = "<group>"; };
+		0A4139851A38E062009D8953 /* greyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greyButton.png; sourceTree = "<group>"; };
 		0A61FC341A2BDCD700A09AB1 /* iNeed_Logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iNeed_Logo.jpg; sourceTree = "<group>"; };
 		0A68E8971A2AA5D90039E9D6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0A6C74031A2E3354009456AC /* splashScreenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashScreenLogo.png; sourceTree = "<group>"; };
+		0AB626211A8EE4DE0088AAE2 /* iNeed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = iNeed.entitlements; sourceTree = "<group>"; };
+		0AC7C0651A39F18F00992DBA /* FavoriteTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteTVC.h; sourceTree = "<group>"; };
+		0AC7C0661A39F18F00992DBA /* FavoriteTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteTVC.m; sourceTree = "<group>"; };
 		0ACD28171A1D784B006E98DF /* iNeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ACD281B1A1D784B006E98DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0ACD281C1A1D784B006E98DF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -301,6 +310,8 @@
 		0AFD6B861A2414BC000DD309 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		0AFD6B881A2414DA000DD309 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0AFD6B8A1A2414E1000DD309 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EFDD984E1A3D28B000D7A6BF /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginVC.h; path = ../LoginVC.h; sourceTree = "<group>"; };
+		EFDD984F1A3D28B000D7A6BF /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginVC.m; path = ../LoginVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,7 +341,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0ACD280E1A1D784B006E98DF = {
+		0AB3F8DD1A3F82500076F03E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				0AD977571A2BFE0B0026B4C3 /* AddressBook.framework */,
@@ -342,6 +353,58 @@
 				0AFD6B861A2414BC000DD309 /* CoreGraphics.framework */,
 				0AFD6B811A241257000DD309 /* MobileCoreServices.framework */,
 				0AFD6B7F1A24124B000DD309 /* MediaPlayer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0AB3F8DE1A3F84230076F03E /* images */ = {
+			isa = PBXGroup;
+			children = (
+				0A4139841A38E061009D8953 /* blueButton.png */,
+				0A4139851A38E062009D8953 /* greyButton.png */,
+				0A6C74031A2E3354009456AC /* splashScreenLogo.png */,
+				0ADBA3F61A2D0AC6001A3D85 /* Icon.png */,
+				0A61FC341A2BDCD700A09AB1 /* iNeed_Logo.jpg */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
+		0AB3F8DF1A3F84710076F03E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0ACD292A1A1D84B2006E98DF /* Variables.h */,
+				0ACD292B1A1D84B2006E98DF /* Variables.m */,
+				0ACD281E1A1D784B006E98DF /* AppDelegate.h */,
+				0ACD281F1A1D784B006E98DF /* AppDelegate.m */,
+				0ACD29231A1D827C006E98DF /* HomeModel.h */,
+				0ACD29241A1D827C006E98DF /* HomeModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		0AB3F8E01A3F84BC0076F03E /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EFDD984E1A3D28B000D7A6BF /* LoginVC.h */,
+				EFDD984F1A3D28B000D7A6BF /* LoginVC.m */,
+				0ACD29331A1D88B2006E98DF /* CategoryTableVC.h */,
+				0ACD29341A1D88B2006E98DF /* CategoryTableVC.m */,
+				0ACD29361A1E39CB006E98DF /* DescriptionTableVC.h */,
+				0ACD29371A1E39CB006E98DF /* DescriptionTableVC.m */,
+				0AFD6B7A1A23F8EC000DD309 /* BorrowFullDetails.h */,
+				0AFD6B7B1A23F8EC000DD309 /* BorrowFullDetails.m */,
+				0AFD6B831A241425000DD309 /* lenderViewController.h */,
+				0AFD6B841A241425000DD309 /* lenderViewController.m */,
+				0AC7C0651A39F18F00992DBA /* FavoriteTVC.h */,
+				0AC7C0661A39F18F00992DBA /* FavoriteTVC.m */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		0ACD280E1A1D784B006E98DF = {
+			isa = PBXGroup;
+			children = (
+				0AB3F8DD1A3F82500076F03E /* Frameworks */,
 				0ACD28191A1D784B006E98DF /* iNeed */,
 				0ACD28361A1D784B006E98DF /* iNeedTests */,
 				0ACD28181A1D784B006E98DF /* Products */,
@@ -360,27 +423,14 @@
 		0ACD28191A1D784B006E98DF /* iNeed */ = {
 			isa = PBXGroup;
 			children = (
-				0A6C74031A2E3354009456AC /* splashScreenLogo.png */,
-				0ADBA3F61A2D0AC6001A3D85 /* Icon.png */,
-				0A61FC341A2BDCD700A09AB1 /* iNeed_Logo.jpg */,
-				0ACD281E1A1D784B006E98DF /* AppDelegate.h */,
-				0ACD281F1A1D784B006E98DF /* AppDelegate.m */,
+				0AB626211A8EE4DE0088AAE2 /* iNeed.entitlements */,
+				0AB3F8E01A3F84BC0076F03E /* ViewController */,
+				0AB3F8DF1A3F84710076F03E /* Model */,
+				0AB3F8DE1A3F84230076F03E /* images */,
 				0ACD28271A1D784B006E98DF /* Main.storyboard */,
 				0ACD282A1A1D784B006E98DF /* Images.xcassets */,
 				0ACD282C1A1D784B006E98DF /* LaunchScreen.xib */,
 				0ACD281A1A1D784B006E98DF /* Supporting Files */,
-				0ACD29231A1D827C006E98DF /* HomeModel.h */,
-				0ACD29241A1D827C006E98DF /* HomeModel.m */,
-				0ACD292A1A1D84B2006E98DF /* Variables.h */,
-				0ACD292B1A1D84B2006E98DF /* Variables.m */,
-				0ACD29331A1D88B2006E98DF /* CategoryTableVC.h */,
-				0ACD29341A1D88B2006E98DF /* CategoryTableVC.m */,
-				0ACD29361A1E39CB006E98DF /* DescriptionTableVC.h */,
-				0ACD29371A1E39CB006E98DF /* DescriptionTableVC.m */,
-				0AFD6B7A1A23F8EC000DD309 /* BorrowFullDetails.h */,
-				0AFD6B7B1A23F8EC000DD309 /* BorrowFullDetails.m */,
-				0AFD6B831A241425000DD309 /* lenderViewController.h */,
-				0AFD6B841A241425000DD309 /* lenderViewController.m */,
 			);
 			path = iNeed;
 			sourceTree = "<group>";
@@ -574,11 +624,17 @@
 		0ACD280F1A1D784B006E98DF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = ROHAN;
 				TargetAttributes = {
 					0ACD28161A1D784B006E98DF = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = FT5TU5KEM8;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					0ACD28321A1D784B006E98DF = {
 						CreatedOnToolsVersion = 6.1;
@@ -641,6 +697,7 @@
 				0ACD28B51A1D7BAE006E98DF /* 04-squiggle.png in Resources */,
 				0ACD290B1A1D7BAE006E98DF /* 79-medical-bag.png in Resources */,
 				0ACD28291A1D784B006E98DF /* Main.storyboard in Resources */,
+				0A4139861A38E062009D8953 /* blueButton.png in Resources */,
 				0ACD28D71A1D7BAE006E98DF /* 27-planet.png in Resources */,
 				0ACD28F81A1D7BAE006E98DF /* 60-signpost.png in Resources */,
 				0ACD282E1A1D784B006E98DF /* LaunchScreen.xib in Resources */,
@@ -708,6 +765,7 @@
 				0ACD28D61A1D7BAE006E98DF /* 26-bandaid.png in Resources */,
 				0ACD28F11A1D7BAE006E98DF /* 53-house.png in Resources */,
 				0ACD28E01A1D7BAE006E98DF /* 36-toolbox.png in Resources */,
+				0A4139871A38E062009D8953 /* greyButton.png in Resources */,
 				0ACD29061A1D7BAE006E98DF /* 74-location.png in Resources */,
 				0ACD28D81A1D7BAE006E98DF /* 28-star.png in Resources */,
 				0ACD28C21A1D7BAE006E98DF /* 106-sliders.png in Resources */,
@@ -746,9 +804,11 @@
 			files = (
 				0ACD29381A1E39CB006E98DF /* DescriptionTableVC.m in Sources */,
 				0AFD6B851A241425000DD309 /* lenderViewController.m in Sources */,
+				EFDD98501A3D28B000D7A6BF /* LoginVC.m in Sources */,
 				0ACD292C1A1D84B2006E98DF /* Variables.m in Sources */,
 				0ACD29351A1D88B2006E98DF /* CategoryTableVC.m in Sources */,
 				0ACD29251A1D827C006E98DF /* HomeModel.m in Sources */,
+				0AC7C0671A39F18F00992DBA /* FavoriteTVC.m in Sources */,
 				0ACD28201A1D784B006E98DF /* AppDelegate.m in Sources */,
 				0ACD281D1A1D784B006E98DF /* main.m in Sources */,
 				0AFD6B7C1A23F8EC000DD309 /* BorrowFullDetails.m in Sources */,
@@ -813,6 +873,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -873,10 +934,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iNeed/iNeed.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = iNeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "RON.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -884,10 +950,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iNeed/iNeed.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = iNeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "RON.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -905,6 +976,7 @@
 				);
 				INFOPLIST_FILE = iNeedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "RON.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNeed.app/iNeed";
 			};
@@ -920,6 +992,7 @@
 				);
 				INFOPLIST_FILE = iNeedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "RON.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNeed.app/iNeed";
 			};
