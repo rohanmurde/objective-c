@@ -14,14 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        
-        //Connection to parse db.
-        Parse.setApplicationId("JJqvPf5fQlO84766VI3rld8GRhhcIgLE6kpoQblF", clientKey: "k8tuYkRL7p6YOoKdvim0x5aN8l9DUYTVLmaIKQTe")
-        
-        return true
-    }
+//    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+//        // Override point for customization after application launch.
+//        
+//        //Connection to parse db.
+////        Parse.setApplicationId("JJqvPf5fQlO84766VI3rld8GRhhcIgLE6kpoQblF", clientKey: "k8tuYkRL7p6YOoKdvim0x5aN8l9DUYTVLmaIKQTe")
+////        
+////        return true
+//    }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
